@@ -5,6 +5,17 @@ from colorama import Fore
 from instances import list_of_websites
 
 
+def validate_input(user_input):
+    try:
+        website_index = int(user_input)
+        if website_index >= 0 and website_index < len(list_of_websites):
+            open_on_browser(list_of_websites[website_index])
+        else:
+            print(Fore.RED, f'input should be in range of 0-{len(list_of_websites)-1}')
+    except ValueError:
+        print(Fore.RED, 'input should be decimal number like 7')
+
+
 class Ping:
     def __new__(cls):
         # singleton design pattern implemented.
@@ -15,18 +26,10 @@ class Ping:
     minimum_ping = 1000
 
     def get_input(self):
-        user_input = input()
-        try:
-            website_index = int(user_input)
-            if user_input:
-                open_on_browser(list_of_websites[website_index])
-            # user can multiple times enter website index.
-        except ValueError:
-            print(Fore.RED, 'input should be decimal number like 10')
-        except IndexError:
-            print(Fore.RED, 'input should be in range of 0-26')
-        self.get_input()
-    
+        while True:
+            user_input = input()
+            validate_input(user_input)
+
     def get_ping(self):
         print(Fore.CYAN, 'Please Wait.... This will Take some time.')
         print(Fore.CYAN, 'Enter website index to launch on browser')

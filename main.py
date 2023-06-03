@@ -6,16 +6,27 @@ from instances import list_of_websites
 
 
 class Ping:
+    def __new__(cls):
+        # singleton design pattern implemented.
+        if not hasattr(cls, 'instance'):
+            cls.instance = super().__new__(cls)
+        return cls.instance
+
     minimum_ping = 1000
 
     def get_input(self):
         user_input = input()
-        website_index = int(user_input)
-        if user_input:
-            open_on_browser(list_of_websites[website_index])
-        # user can multiple times enter website index.
+        try:
+            website_index = int(user_input)
+            if user_input:
+                open_on_browser(list_of_websites[website_index])
+            # user can multiple times enter website index.
+        except ValueError:
+            print(Fore.RED, 'input should be decimal number like 10')
+        except IndexError:
+            print(Fore.RED, 'input should be in range of 0-26')
         self.get_input()
-
+    
     def get_ping(self):
         print(Fore.CYAN, 'Please Wait.... This will Take some time.')
         print(Fore.CYAN, 'Enter website index to launch on browser')
